@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { LoaderIcon } from "lucide-react";
 
 type ResultInterface = {
   data: { id: number; text: string }[];
@@ -79,17 +80,32 @@ const InfiniteScroll = () => {
   }, [hasMore, isLoading]);
 
   return (
-    <div className="max-w-4xl mx-auto py-20">
-      <h1>Intersection Observer Infinite Scroll</h1>
+    <div className="max-w-4xl mx-auto pt-4">
+      <h1 className="font-bold text-2xl my-8 text-center text-neutral-200">
+        Intersection Observer Infinite Scroll
+      </h1>
 
-      {items.map((item) => (
-        <div key={item.id}>
-          <p>{item.text}</p>
+      <div className="flex flex-col gap-2">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="border border-neutral-400 rounded-lg p-2 pl-4"
+          >
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+
+      {isLoading && (
+        <div className="flex items-center justify-center my-4">
+          <LoaderIcon className="animate-spin " />
         </div>
-      ))}
-
-      {isLoading && <div>Loading More...</div>}
-      {!hasMore && <div>No More Items</div>}
+      )}
+      {!hasMore && (
+        <div className="flex items-center justify-center my-4">
+          No More Items
+        </div>
+      )}
 
       <div ref={sentinelRef} className="h-1" />
     </div>
