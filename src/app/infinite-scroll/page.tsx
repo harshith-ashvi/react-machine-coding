@@ -2,6 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+type ResultInterface = {
+  data: { id: number; text: string }[];
+  hasMore: boolean;
+};
+
 const TOTAL_ITEMS = 100;
 
 function fetchApi(page: number, limit = 20) {
@@ -18,17 +23,14 @@ function fetchApi(page: number, limit = 20) {
         })
       );
 
-      resolve({ data, hasMore: endLimit < TOTAL_ITEMS } as {
-        data: { id: number; text: string }[];
-        hasMore: boolean;
-      });
+      resolve({ data, hasMore: endLimit < TOTAL_ITEMS });
     }, 1000);
   });
 }
 
 const InfiniteScroll = () => {
   const [items, setItems] = useState<{ id: number; text: string }[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -39,8 +41,11 @@ const InfiniteScroll = () => {
     setIsLoading(true);
     try {
       const result = await fetchApi(page);
-      setItems((prevState) => [...prevState, ...result.data]);
-      setHasMore(result.hasMore);
+      setItems((prevState) => [
+        ...prevState,
+        ...(result as ResultInterface).data,
+      ]);
+      setHasMore((result as ResultInterface).hasMore);
       setIsLoading(false);
       setPage((prevState) => prevState + 1);
     } catch (error) {
