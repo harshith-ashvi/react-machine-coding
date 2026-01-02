@@ -1,6 +1,7 @@
 # React Machine Coding
 
-React Machine Coding is a curated collection of **frontend machine-coding interview questions** implemented using **Next.js**, **Tailwind CSS**, and **Motion**.  
+React Machine Coding is a curated collection of **frontend machine-coding interview questions** implemented using **Next.js**, **Tailwind CSS**, and **Motion**.
+
 Each problem focuses on **UI correctness, component architecture, state management, animations, and real-world edge cases** commonly evaluated during frontend interviews.
 
 This repository is open-source and intended for:
@@ -42,14 +43,8 @@ Each challenge is implemented as a separate route with its own demo and code.
 
 - Todo App
 - Infinite Scrolling List
-- Debounced Search Input
-- Pagination
-- Modal and Drawer Components
-- Drag and Drop
-- Stepper / Multi-Step Form
-- Virtualized List
-
-More challenges will be added incrementally.
+- Two Step Login Form
+- More challenges will be added incrementally.
 
 ---
 
