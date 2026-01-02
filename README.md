@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Machine Coding
+
+React Machine Coding is a curated collection of **frontend machine-coding interview questions** implemented using **Next.js**, **Tailwind CSS**, and **Motion**.  
+Each problem focuses on **UI correctness, component architecture, state management, animations, and real-world edge cases** commonly evaluated during frontend interviews.
+
+This repository is open-source and intended for:
+
+- Interview preparation
+- Skill sharpening
+- Public reference for recruiters and companies
+- Learning modern React patterns through practical examples
+
+Each challenge includes a **live demo** and **accessible source code**.
+
+---
+
+## Features
+
+- Machine coding problems commonly asked in frontend interviews
+- Individual pages for each problem with interactive demos
+- Clean, readable, and production-oriented implementations
+- Motion-based animations and micro-interactions
+- Reusable UI components and utilities
+- Fully responsive layouts
+- Open-source and easy to extend
+
+---
+
+## Tech Stack
+
+- Framework: Next.js (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS
+- Animations: Motion
+- Runtime / Package Manager: Bun
+
+---
+
+## Implemented Challenges
+
+Each challenge is implemented as a separate route with its own demo and code.
+
+- Todo App
+- Infinite Scrolling List
+- Debounced Search Input
+- Pagination
+- Modal and Drawer Components
+- Drag and Drop
+- Stepper / Multi-Step Form
+- Virtualized List
+
+More challenges will be added incrementally.
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- Bun installed (recommended)  
+  or Node.js 18+
+- Basic familiarity with React and TypeScript
+
+---
 
 ## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/react-machine-coding.git
+cd react-machine-coding
+```
+
+### 2. Install Dependencies
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
+```
+
+### 3. Run the Development Server
+
+First, run the development server:
+
+```bash
 bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
