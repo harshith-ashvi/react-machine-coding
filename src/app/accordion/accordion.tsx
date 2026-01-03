@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface AccordionInterface {
@@ -25,19 +26,35 @@ const Accordion = ({
 
   return (
     <div className="w-full border-b border-neutral-500 py-1">
-      <div
+      <button
         className={cn(
-          "flex items-center justify-between py-1 px-2 cursor-pointer",
+          "flex w-full items-center justify-between py-1 px-2 cursor-pointer",
           className
         )}
         onClick={handleToggle}
+        aria-expanded={isOpen}
       >
         <p className="font-bold text-lg">{title}</p>
         <ChevronDown
-          className={cn("size-4 duration-300", isOpen ? "rotate-x-180" : "")}
+          className={cn(
+            "size-4 ease-in-out transition-all duration-300",
+            isOpen ? "rotate-z-180" : ""
+          )}
         />
-      </div>
-      {isOpen && <div className="px-2">{children}</div>}
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, height: "auto", filter: "blur(0px)" }}
+            exit={{ opacity: 0, height: 0, filter: "blur(10px)" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="px-2"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

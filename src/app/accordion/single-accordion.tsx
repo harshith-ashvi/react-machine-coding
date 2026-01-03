@@ -11,7 +11,7 @@ const SingleAccordion = () => {
 
   return (
     <div className="py-8">
-      <h4 className="font-bold text-4xl">Single Accordion</h4>
+      <h4 className="font-bold text-4xl pb-2">Single Accordion</h4>
       <Accordion
         title="Lorem Ipsem"
         isOpen={isOpen}
