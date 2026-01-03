@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AccordionInterface {
@@ -33,7 +33,7 @@ const Accordion = ({
         onClick={handleToggle}
       >
         <p className="font-bold text-lg">{title}</p>
-        <ArrowDown
+        <ChevronDown
           className={cn("size-4 duration-300", isOpen ? "rotate-x-180" : "")}
         />
       </div>
