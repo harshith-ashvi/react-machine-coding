@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
-
-import FolderAccordion from "./folder-accordion";
+import AccordionItem from "./accordion-item";
 
 export interface NestedAccordionInterface {
   id: number;
   name: string;
   parentId: null | number;
+}
+
+export interface AccordionNode {
+  id: number;
+  name: string;
+  children: AccordionNode[];
 }
 
 const nestedAccordionData: NestedAccordionInterface[] = [
@@ -21,56 +25,44 @@ const nestedAccordionData: NestedAccordionInterface[] = [
   { id: 8, name: "Child 1.2.1", parentId: 3 },
 ];
 
-function formatAccordionData(data: NestedAccordionInterface[]) {
-  return data.reduce(
-    (acc, current) => {
-      if (!current.parentId) {
-        acc.parentAccordion.push(current);
-      } else {
-        if (!acc.childAccordions[`${current.parentId}`]) {
-          acc.childAccordions[`${current.parentId}`] = [];
-        }
-        acc.childAccordions[`${current.parentId}`].push(current);
-      }
-      return acc;
-    },
-    { parentAccordion: [], childAccordions: {} } as {
-      parentAccordion: NestedAccordionInterface[];
-      childAccordions: Record<string, NestedAccordionInterface[]>;
+export function buildAccordionTree(
+  data: NestedAccordionInterface[]
+): AccordionNode[] {
+  const map = new Map<number, AccordionNode>();
+  const roots: AccordionNode[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const { id, name } = data[i];
+    map.set(id, {
+      id,
+      name,
+      children: [],
+    });
+  }
+
+  // Step 2: link children to parents
+  data.forEach((item) => {
+    const node = map.get(item.id)!;
+
+    if (item.parentId === null) {
+      roots.push(node);
+    } else {
+      const parent = map.get(item.parentId);
+      parent?.children.push(node);
     }
-  );
+  });
+
+  return roots;
 }
 
 const NestedAccordion = () => {
-  const [openIndex, setOpenIndex] = useState<number[]>([]);
-
-  const { parentAccordion, childAccordions } =
-    formatAccordionData(nestedAccordionData);
-
-  const handleToggle = (id: number) => {
-    if (openIndex.includes(id)) {
-      setOpenIndex((prev) => {
-        return prev.filter((index) => index !== id);
-      });
-    } else {
-      setOpenIndex((prev) => [...prev, id]);
-    }
-  };
+  const treeData = buildAccordionTree(nestedAccordionData);
 
   return (
     <div className="max-w-4xl mx-auto min-h-screen pt-20">
       <h1 className="font-bold text-4xl pb-2">Nested Accordions</h1>
-      {parentAccordion.map((acc) => {
-        return (
-          <FolderAccordion
-            key={acc.id}
-            accordionId={acc.id}
-            openIndex={openIndex}
-            title={acc.name}
-            childAccordions={childAccordions}
-            handleToggle={handleToggle}
-          />
-        );
+      {treeData.map((acc) => {
+        return <AccordionItem key={acc.id} node={acc} />;
       })}
     </div>
   );
