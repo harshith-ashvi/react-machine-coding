@@ -39,7 +39,7 @@ const MultipleAccordion = () => {
 
   return (
     <div className="py-8">
-      <h4 className="font-bold text-4xl">
+      <h4 className="font-bold text-4xl pb-2">
         Multiple Accordion with single open
       </h4>
       {accordionData.map((data, index) => {
