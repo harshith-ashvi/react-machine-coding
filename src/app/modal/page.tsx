@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import Modal from "./modal";
+import { AnimatePresence } from "motion/react";
 
 const ModalDisplay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,14 +15,16 @@ const ModalDisplay = () => {
           Open
         </button>
       </div>
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          title="Modal Title to Display"
-          onClose={() => setIsModalOpen(false)}
-          content="This is a test content"
-        />
-      )}
+      <AnimatePresence>
+        {isModalOpen && (
+          <Modal
+            title="Modal Title to Display"
+            onClose={() => setIsModalOpen(false)}
+          >
+            <p>This is test content</p>
+          </Modal>
+        )}
+      </AnimatePresence>
     </>
   );
 };
