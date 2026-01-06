@@ -3,7 +3,7 @@ import { FormattedCommentType } from "./page";
 
 interface CommentProps {
   comment: FormattedCommentType;
-  handleAddComment: (message: string, parentId: number) => void;
+  handleAddComment: (message: string, parentId: number | null) => void;
   handleAddLikeCount: (commentId: number) => void;
   handleAddDislikeCount: (commentId: number) => void;
   handleDeleteComments: (commentId: number) => void;

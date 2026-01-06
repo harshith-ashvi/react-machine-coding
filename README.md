@@ -44,6 +44,12 @@ Each challenge is implemented as a separate route with its own demo and code.
 - Todo App
 - Infinite Scrolling List
 - Two Step Login Form
+- Accordion (Single & Multiple with one open)
+- Nested Accordion
+- Multi-Step
+- Modal
+- Feature Flag
+- Nested Comments
 - More challenges will be added incrementally.
 
 ---

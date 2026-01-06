@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useMemo, useState } from "react";
 import Comment from "./comment";
 
 export type CommentType = {
@@ -45,10 +45,11 @@ const getFormattedComments = (
 
 const NestedComments = () => {
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [formattedComments, setFormattedComments] = useState<
-    FormattedCommentType[]
-  >([]);
   const [commentMessage, setCommentMessage] = useState("");
+
+  const formattedComments = useMemo(() => {
+    return getFormattedComments(comments);
+  }, [comments]);
 
   const handleAddComment = (message: string, parentId: number | null) => {
     const comment = {
@@ -59,45 +60,40 @@ const NestedComments = () => {
       parentId,
     };
     setComments((prev) => [...prev, comment]);
-    const updatedFormattedComments = getFormattedComments([
-      ...comments,
-      comment,
-    ]);
-    setFormattedComments(updatedFormattedComments);
   };
 
   const handleAddLikeCount = (commentId: number) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.id !== commentId) return comment;
-      return { ...comment, likeCount: comment.likeCount + 1 };
+    setComments((prev) => {
+      return prev.map((comment) => {
+        if (comment.id !== commentId) return comment;
+        return { ...comment, likeCount: comment.likeCount + 1 };
+      });
     });
-    setComments(updatedComments);
-    const updatedFormmattedComments = getFormattedComments(updatedComments);
-    setFormattedComments(updatedFormmattedComments);
   };
 
   const handleAddDislikeCount = (commentId: number) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.id !== commentId) return comment;
-      return { ...comment, dislikeCount: comment.dislikeCount + 1 };
+    setComments((prev) => {
+      return prev.map((comment) => {
+        if (comment.id !== commentId) return comment;
+        return { ...comment, dislikeCount: comment.dislikeCount + 1 };
+      });
     });
-    setComments(updatedComments);
-    const updatedFormmattedComments = getFormattedComments(updatedComments);
-    setFormattedComments(updatedFormmattedComments);
   };
 
   const handleDeleteComments = (commentId: number) => {
     const deleteCommentIds = [commentId];
-    const updatedComments = comments.filter((comment) => {
-      if (deleteCommentIds.includes(comment.id)) {
-        deleteCommentIds.push(comment.id);
-        return false;
-      }
-      return true;
+    setComments((prev) => {
+      return prev.filter((comment) => {
+        if (
+          deleteCommentIds.includes(comment.id) ||
+          deleteCommentIds.includes(comment.parentId ?? 0)
+        ) {
+          deleteCommentIds.push(comment.id);
+          return false;
+        }
+        return true;
+      });
     });
-    setComments(updatedComments);
-    const updatedFormmattedComments = getFormattedComments(updatedComments);
-    setFormattedComments(updatedFormmattedComments);
   };
 
   const handleCommentAdd = (e: KeyboardEvent<HTMLTextAreaElement>) => {
