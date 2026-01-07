@@ -36,7 +36,6 @@ const Modal = ({ title, className, children, onClose }: ModalProps) => {
       onClick={onClose}
     >
       <motion.div
-        // ref={containerRef}
         className={cn(
           "rounded-lg w-[80%] h-[80%] border border-neutral-600 ",
           className
@@ -58,7 +57,7 @@ const Modal = ({ title, className, children, onClose }: ModalProps) => {
             <X className="size-4 " />
           </button>
         </div>
-        <div className="p-2">{children}</div>
+        <>{children}</>
       </motion.div>
     </div>
   );
