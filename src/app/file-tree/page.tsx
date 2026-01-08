@@ -1,23 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence } from "motion/react";
+import { FolderPlus } from "lucide-react";
 
 import Modal from "./modal";
+import FileList from "./file-list";
 
-type FileType = {
+export type FileType = {
   id: number;
   type: "file" | "folder";
   name: string;
   parentId: null | number;
 };
 
-// type FormattedFileType = {
-//   id: number;
-//   type: "file" | "folder";
-//   name: string;
-//   children: FormattedFileType[];
-// };
+export type FormattedFileType = {
+  id: number;
+  type: "file" | "folder";
+  name: string;
+  children: FormattedFileType[];
+};
+
+const getFormattedFileList = (data: FileType[]): FormattedFileType[] => {
+  const map = new Map<number, FormattedFileType>();
+  const result: FormattedFileType[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    map.set(data[i].id, { ...data[i], children: [] });
+  }
+
+  data.forEach((item) => {
+    const file = map.get(item.id);
+    if (!file) return;
+    if (!item.parentId) {
+      result.push(file);
+    } else {
+      const parent = map.get(item.parentId);
+      parent?.children.push(file);
+    }
+  });
+
+  return result;
+};
 
 const FileTree = () => {
   const [fileList, setFileList] = useState<FileType[]>([]);
@@ -26,9 +50,14 @@ const FileTree = () => {
   const [fileName, setFileName] = useState<string>("");
   const [fileType, setFileType] = useState<"file" | "folder">("file");
 
+  const formattedFiles = useMemo(() => {
+    return getFormattedFileList(fileList);
+  }, [fileList]);
+
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
   const handleOpenModal = (id: number | null) => {
+    setFileName("");
     setParentId(id);
     handleModalToggle();
   };
@@ -51,13 +80,25 @@ const FileTree = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto min-h-screen flex justify-center items-center">
-        <button
-          onClick={() => handleOpenModal(null)}
-          className="cursor-pointer"
-        >
-          Open
-        </button>
+      <div className="max-w-lg mx-auto min-h-screen pt-40 flex flex-col items-center justify-start">
+        <div className="flex items-center justify-between w-full mb-2">
+          <p className="font-bold text-2xl">File Tree</p>{" "}
+          <button
+            className="cursor-pointer"
+            onClick={() => handleOpenModal(null)}
+          >
+            <FolderPlus />
+          </button>
+        </div>
+        <AnimatePresence>
+          {formattedFiles.map((file) => (
+            <FileList
+              key={file.id}
+              file={file}
+              handleOpenModal={handleOpenModal}
+            />
+          ))}
+        </AnimatePresence>
       </div>
       <AnimatePresence>
         {isModalOpen && (
