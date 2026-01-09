@@ -37,14 +37,8 @@ const FileExplorer = () => {
   const updateFolderPath = (folder: { id: number; name: string }) => {
     setCurrentFolder(folder.id);
     setFolderPath((prev) => {
-      const foldersList = [];
-      for (let i = 0; i < prev.length - 1; i++) {
-        foldersList.push(prev[i]);
-        if (prev[i].id === folder.id) {
-          break;
-        }
-      }
-      return foldersList;
+      const folderIndex = prev.findIndex((file) => file.id === folder.id);
+      return prev.slice(0, folderIndex + 1);
     });
   };
 
