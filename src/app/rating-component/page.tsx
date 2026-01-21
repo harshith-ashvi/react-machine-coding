@@ -25,9 +25,9 @@ const RatingComponent = () => {
         <Rating
           disabled
           isChangeOnHover
-          rating={rating}
+          rating={2}
           maxRating={5}
-          onChange={handleRatingUpdate}
+          onChange={() => {}}
         />
       </div>
     </div>

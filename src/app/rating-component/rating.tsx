@@ -47,13 +47,14 @@ const Rating = ({
           <Star
             key={starIndex}
             className={cn(
-              "cursor-pointer",
+              !disabled ? "cursor-pointer" : "",
               hoverRating !== 0 && starIndex <= hoverRating
                 ? "text-yellow-200"
                 : hoverRating === 0 && starIndex <= rating
                   ? "text-yellow-400"
                   : "",
             )}
+            aria-label={`${starIndex} star${starIndex > 1 ? "s" : ""}`}
             onMouseEnter={() => handleOnMouseEnter(starIndex)}
             onMouseLeave={handleOnMouseLeave}
             onClick={() => handleChangeRating(starIndex)}
