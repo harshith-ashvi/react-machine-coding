@@ -6,22 +6,20 @@ import { useEffect, useRef, useState } from "react";
 const getFormattedTime = (time: number) => {
   const timeInSeconds = time / 1000;
   const hours = `${Math.floor(timeInSeconds / 3600)}`;
-  const minutes = `${Math.floor(timeInSeconds / 60)}`;
+  const minutes = `${Math.floor((timeInSeconds % 3600) / 60)}`;
   const seconds = `${Math.floor(timeInSeconds % 60)}`;
   return `${hours.length === 1 ? `0${hours}` : hours}:${minutes.length === 1 ? `0${minutes}` : minutes}:${seconds.length === 1 ? `0${seconds}` : seconds}`;
 };
 
 const StopWatch = () => {
   const [isTimerStarted, setIsTimerStarted] = useState(false);
-  const [isTimerPaused, setIsTimerPaused] = useState(false);
-  const [initialTime, setInitialTime] = useState(0);
   const [timer, setTimer] = useState(0);
   const timeRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (isTimerStarted && !isTimerPaused) {
+    if (isTimerStarted) {
       timeRef.current = setInterval(() => {
-        setTimer(Date.now() - initialTime);
+        setTimer((prev) => prev + 1000);
       }, 1000);
     }
 
@@ -30,37 +28,13 @@ const StopWatch = () => {
         clearInterval(timeRef.current);
       }
     };
-  }, [isTimerStarted, isTimerPaused, initialTime]);
+  }, [isTimerStarted]);
 
-  const handleStartTimer = () => {
-    setIsTimerStarted(true);
-    setInitialTime(Date.now());
-  };
-
-  const handlePauseTimer = () => {
-    setIsTimerPaused(true);
-  };
-
-  const handleResumeTimer = () => {
-    setIsTimerPaused(false);
-    setInitialTime((prev) => prev + timer);
-  };
-
-  const handleTimer = () => {
-    if (!isTimerStarted && !isTimerPaused) {
-      handleStartTimer();
-    } else if (isTimerStarted && !isTimerPaused) {
-      handlePauseTimer();
-    } else if (isTimerStarted && isTimerPaused) {
-      handleResumeTimer();
-    }
-  };
+  const handleTimer = () => setIsTimerStarted((prev) => !prev);
 
   const handleResetTimer = () => {
     setTimer(0);
     setIsTimerStarted(false);
-    setInitialTime(0);
-    setIsTimerPaused(false);
   };
 
   return (
@@ -72,14 +46,10 @@ const StopWatch = () => {
           onClick={handleTimer}
           className={cn(
             "cursor-pointer bg-green-400 px-2 py-1 text-black rounded font-medium text-xl",
-            isTimerStarted && !isTimerPaused ? "bg-yellow-400" : "",
+            isTimerStarted ? "bg-yellow-400" : "",
           )}
         >
-          {!isTimerStarted && !isTimerPaused
-            ? "Start"
-            : isTimerStarted && !isTimerPaused
-              ? "Pause"
-              : "Resume"}
+          {isTimerStarted ? "Pause" : timer > 1000 ? "Resume" : "Start"}
         </button>
         <button
           className="cursor-pointer bg-gray-400 px-2 py-1 text-black rounded font-medium text-xl"
